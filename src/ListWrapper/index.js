@@ -22,6 +22,7 @@ class ListWrapper extends Component {
     this.handleInputChange = this.handleInputChange.bind(this)
     this.handleListInputChange = this.handleListInputChange.bind(this)
     this.addTodos = this.addTodos.bind(this)
+    this.editTodos = this.editTodos.bind(this)
     this.haveDo = this.haveDo.bind(this)
     this.unDo = this.unDo.bind(this)
     this.removeTodo = this.removeTodo.bind(this)
@@ -29,6 +30,8 @@ class ListWrapper extends Component {
     this.selectColor = this.selectColor.bind(this)
     this.reverseTodo = this.reverseTodo.bind(this)
     this.reverseUndo = this.reverseUndo.bind(this)
+    this.changeTodos = this.changeTodos.bind(this)
+    this.cancelChange = this.cancelChange.bind(this)
   }
 
   handleInputChange (inputText) {
@@ -62,6 +65,19 @@ class ListWrapper extends Component {
     }
   }
 
+  editTodos () {
+    let text = this.state.editInputText.trim()
+    if (text) {
+      let todos = this.state.todos
+      todos[this.state.nowIndex].text = text
+      this.setState({
+        todos,
+        editInputText: '',
+        nowIndex: -1
+      })
+    }
+  }
+
   haveDo (index) {
     let todos = this.state.todos
     let havedos = this.state.havedos
@@ -70,7 +86,8 @@ class ListWrapper extends Component {
     todos.splice(index, 1)
     this.setState({
       todos,
-      havedos
+      havedos,
+      nowIndex: -1
     })
   }
 
@@ -99,6 +116,19 @@ class ListWrapper extends Component {
     havedos.splice(index, 1)
     this.setState({
       havedos
+    })
+  }
+
+  changeTodos (index) {
+    this.setState({
+      nowIndex: index,
+      editInputText: this.state.todos[index].text
+    })
+  }
+
+  cancelChange (e) {
+    this.setState({
+      nowIndex: -1
     })
   }
 
@@ -131,7 +161,8 @@ class ListWrapper extends Component {
         {
           inputText: this.state.inputText,
           onInputChange: this.handleInputChange,
-          onClick: this.addTodos
+          onClick: this.addTodos,
+          onKeyUp: this.addTodos
         }
       ),
       e(
@@ -159,6 +190,10 @@ class ListWrapper extends Component {
           onInputChange: this.handleListInputChange,
           removeClick: this.removeTodo,
           haveClick: this.haveDo,
+          changeListText: this.changeTodos,
+          editInputText: this.state.editInputText,
+          onKeyUp: this.editTodos,
+          onBlur: this.cancelChange,
           list: this.state.todos
         }
       ),
