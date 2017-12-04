@@ -1,11 +1,52 @@
 import { Component, createElement as e } from 'react'
+import ItemTypes from '../ItemTypes.js'
+import { DragSource, DropTarget } from 'react-dnd'
 
-class ToDoListItem extends Component {
+const itemSource = {
+  beginDrag(props) {
+    const { value, index, undo } = props
+    return {
+      value,
+      index,
+      undo
+    }
+  }
+}
+
+const itemTarget = {
+  hover (props, monitor, component) {
+    const { value:dragItem, index:dragIndex, undo:dragUndo } = monitor.getItem()
+    const { value:dropItem, index:dropIndex, undo:dropUndo } = props
+    const { moveItem } = component
+
+    if (dragUndo !== dropUndo || dragIndex === dropIndex) { return }
+
+    moveItem({
+      dragItem,
+      dragIndex
+    }, {
+      dropItem,
+      dropIndex
+    }, dragUndo)
+
+    monitor.getItem().index = dropIndex
+  }
+}
+
+@DragSource(ItemTypes.Item, itemSource, (connect, monitor) => ({
+  connectDragSource: connect.dragSource(),
+  isDragging: monitor.isDragging()
+}))
+@DropTarget(ItemTypes.Item, itemTarget, connect => ({
+  connectDropTarget: connect.dropTarget()
+}))
+export default class ToDoListItem extends Component {
   constructor (props) {
     super(props)
     this.handleChange = this.handleChange.bind(this)
     this.handleKeyup = this.handleKeyup.bind(this)
     this.handleBlur = this.handleBlur.bind(this)
+    this.moveItem = this.moveItem.bind(this)
   }
 
   handleChange (e) {
@@ -62,43 +103,47 @@ class ToDoListItem extends Component {
     }
   }
 
+  moveItem (drag, drop, undo) {
+    this.props.moveItem(drag, drop, undo)
+  }
+
   inputShow (flag) {
     if (flag) { return this.change(this.props.undo).input }
   }
 
   render () {
-    return e(
+    const { connectDragSource, connectDropTarget, value, index, undo, nowIndex } = this.props
+
+    return connectDragSource(connectDropTarget(e(
       'li',
       {
-        className: `list-item bg-${this.props.value.color}`
+        className: `list-item bg-${value.color}`
       },
       e('span', { className: 'glyphicon glyphicon-option-vertical' }),
       e(
         'span',
         {
-          className: `${this.change(this.props.undo).glyphicon}`,
-          onClick: this.haveClick.bind(this, this.props.index)
+          className: `${this.change(undo).glyphicon}`,
+          onClick: this.haveClick.bind(this, index)
         }
       ),
       e(
         'span',
         {
           className: 'glyphicon glyphicon glyphicon-remove btn-del',
-          onClick: this.removeClick.bind(this, this.props.index)
+          onClick: this.removeClick.bind(this, index)
         }
       ),
       e(
         'p',
         {
           className: 'list-text',
-          title: this.props.value.text,
-          onClick: this.changeListText.bind(this, this.props.index)
+          title: value.text,
+          onClick: this.changeListText.bind(this, index)
         },
-        e('span', { className: `${this.change(this.props.undo).through}` }, this.props.value.text),
-        this.inputShow(this.props.nowIndex === this.props.index)
+        e('span', { className: `${this.change(undo).through}` }, value.text),
+        this.inputShow(nowIndex === index)
       )
-    )
+    )))
   }
 }
-
-export default ToDoListItem

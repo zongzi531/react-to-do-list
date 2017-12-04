@@ -1,8 +1,11 @@
 import { Component, createElement as e } from 'react'
 import Title from './Title'
 import ListWrapper from './ListWrapper'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
 
-class App extends Component {
+@DragDropContext(HTML5Backend)
+export default class App extends Component {
   render() {
     return e(
       'div',
@@ -13,5 +16,3 @@ class App extends Component {
     )
   }
 }
-
-export default App

@@ -1,6 +1,6 @@
 import { Component, createElement as e } from 'react'
 
-class NavTabs extends Component {
+export default class NavTabs extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -47,4 +47,3 @@ class NavTabs extends Component {
   }
 }
 
-export default NavTabs

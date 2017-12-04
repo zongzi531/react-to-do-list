@@ -1,7 +1,7 @@
 import { Component, createElement as e } from 'react'
 import ToDoListItem from '../ToDoListItem'
 
-class ToDoList extends Component {
+export default class ToDoList extends Component {
   render () {
     if (this.props.listDisplay) {
       return e(
@@ -24,7 +24,8 @@ class ToDoList extends Component {
               onBlur: this.props.onBlur,
               value,
               index,
-              key: value.key
+              key: value.key,
+              moveItem: this.props.moveItem
             }
           )
         })
@@ -34,5 +35,3 @@ class ToDoList extends Component {
     }
   }
 }
-
-export default ToDoList

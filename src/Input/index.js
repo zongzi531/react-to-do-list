@@ -1,6 +1,6 @@
 import { Component, createElement as e } from 'react'
 
-class Input extends Component {
+export default class Input extends Component {
   constructor (props) {
     super(props)
     this.handleChange = this.handleChange.bind(this)
@@ -48,5 +48,3 @@ class Input extends Component {
     )
   }
 }
-
-export default Input

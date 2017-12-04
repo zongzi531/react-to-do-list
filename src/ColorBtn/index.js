@@ -1,6 +1,6 @@
 import { Component, createElement as e } from 'react'
 
-class ColorBtn extends Component {
+export default class ColorBtn extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -47,5 +47,3 @@ class ColorBtn extends Component {
     )
   }
 }
-
-export default ColorBtn

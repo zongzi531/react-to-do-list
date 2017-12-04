@@ -5,7 +5,7 @@ import HelpNote from '../HelpNote'
 import NavTabs from '../NavTabs'
 import ToDoList from '../ToDoList'
 
-class ListWrapper extends Component {
+export default class ListWrapper extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -32,6 +32,8 @@ class ListWrapper extends Component {
     this.reverseUndo = this.reverseUndo.bind(this)
     this.changeTodos = this.changeTodos.bind(this)
     this.cancelChange = this.cancelChange.bind(this)
+    this.moveItem = this.moveItem.bind(this)
+    this.moveItemExchange = this.moveItemExchange.bind(this)
   }
 
   handleInputChange (inputText) {
@@ -150,6 +152,27 @@ class ListWrapper extends Component {
     })
   }
 
+  moveItem ({ dragItem, dragIndex }, { dropItem, dropIndex }, undo) {
+    let todos = undo ? this.state.todos : this.state.havedos
+
+    todos[dragIndex] = dropItem
+    todos[dropIndex] = dragItem
+
+    this.moveItemExchange(undo, todos)
+  }
+
+  moveItemExchange(undo, todos) {
+    if (undo) {
+      this.setState({
+        todos
+      })
+    } else {
+      this.setState({
+        havedos: todos
+      })
+    }
+  }
+
   render () {
     return e(
       'div',
@@ -194,7 +217,8 @@ class ListWrapper extends Component {
           editInputText: this.state.editInputText,
           onKeyUp: this.editTodos,
           onBlur: this.cancelChange,
-          list: this.state.todos
+          list: this.state.todos,
+          moveItem: this.moveItem
         }
       ),
       e(
@@ -213,11 +237,10 @@ class ListWrapper extends Component {
           listDisplay: this.state.havedoflag,
           removeClick: this.removeUndo,
           haveClick: this.unDo,
-          list: this.state.havedos
+          list: this.state.havedos,
+          moveItem: this.moveItem
         }
       )
     )
   }
 }
-
-export default ListWrapper

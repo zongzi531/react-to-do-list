@@ -1,6 +1,6 @@
 import { Component, createElement as e } from 'react'
 
-class HelpNote extends Component {
+export default class HelpNote extends Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -18,5 +18,3 @@ class HelpNote extends Component {
     )
   }
 }
-
-export default HelpNote
