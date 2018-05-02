@@ -145,3 +145,6 @@ button {
   width: calc(100% - 130px);
   z-index: 1;
 }
+.badge {
+  margin-left: 4px;
+}
