@@ -1,36 +1,23 @@
 import { Component, createElement as e } from 'react'
 import { ITEMTYPES as ItemTypes } from '../../config'
 import { DragSource, DropTarget } from 'react-dnd'
+import { IToDoList, IDragObject, IDropObject } from '../../interfaces'
 
-interface IToDoList {
-  color: string
-  text: string
-  key: string
-}
-
-interface IDragAndDrop {
-  dragItem?: IToDoList
-  dropItem?: IToDoList
-  dropIndex?: number
-  dragIndex?: number
-}
-
-
-interface IToDoListItemPropTypes {
-  editInputText: string
-  index: number
-  nowIndex: number
+export interface IToDoListItemPropTypes {
+  editInputText?: string
+  index?: number
+  nowIndex?: number
   undo: boolean
-  value: IToDoList
+  value?: IToDoList
   connectDragSource?: any
   connectDropTarget?: any
-  onInputChange(value: string): void
+  onInputChange?(value: string): void
   removeClick(index: number): void
   haveClick(index: number): void
-  changeListText(index: number): void
-  onKeyUp(): void
-  onBlur(event: React.FocusEvent<HTMLInputElement>): void
-  moveItem(drag: IDragAndDrop, drop: IDragAndDrop, undo: boolean): void
+  changeListText?(index: number): void
+  onKeyUp?(): void
+  onBlur?(event: React.FocusEvent<HTMLInputElement>): void
+  moveItem(drag: IDragObject, drop: IDropObject, undo: boolean): void
 }
 
 interface IToDoListItemState {
@@ -84,7 +71,9 @@ class ToDoListItem extends Component<IToDoListItemPropTypes, IToDoListItemState>
   }
 
   public handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    this.props.onInputChange(event.target.value)
+    if (this.props.onInputChange) {
+      this.props.onInputChange(event.target.value)
+    }
   }
 
   public removeClick(index: number) {
@@ -100,13 +89,15 @@ class ToDoListItem extends Component<IToDoListItemPropTypes, IToDoListItemState>
   }
 
   public handleKeyup(event: React.KeyboardEvent<HTMLInputElement>) {
-    if (event.keyCode === 13) {
+    if (event.keyCode === 13 && this.props.onKeyUp) {
       this.props.onKeyUp()
     }
   }
 
   public handleBlur(event: React.FocusEvent<HTMLInputElement>) {
-    this.props.onBlur(event)
+    if (this.props.onBlur) {
+      this.props.onBlur(event)
+    }
   }
 
   public change(flag: boolean) {
@@ -139,7 +130,7 @@ class ToDoListItem extends Component<IToDoListItemPropTypes, IToDoListItemState>
     }
   }
 
-  public moveItem(drag: IDragAndDrop, drop: IDragAndDrop, undo: boolean) {
+  public moveItem(drag: IDragObject, drop: IDropObject, undo: boolean) {
     this.props.moveItem(drag, drop, undo)
   }
 
@@ -154,7 +145,7 @@ class ToDoListItem extends Component<IToDoListItemPropTypes, IToDoListItemState>
     return connectDragSource(connectDropTarget(e(
       'li',
       {
-        className: `list-item bg-${value.color}`
+        className: `list-item bg-${value ? value.color: ''}`
       },
       e('span', { className: 'glyphicon glyphicon-option-vertical' }),
       e(
@@ -175,19 +166,19 @@ class ToDoListItem extends Component<IToDoListItemPropTypes, IToDoListItemState>
         'p',
         {
           className: 'list-text',
-          title: value.text,
+          title: value ? value.text: '',
           onClick: this.changeListText.bind(this, index)
         },
-        e('span', { className: `${this.change(undo).through}` }, value.text),
+        e('span', { className: `${this.change(undo).through}` }, value ? value.text : ''),
         this.inputShow(nowIndex === index)
       )
     )))
   }
 }
 
-  export default DragSource(ItemTypes.Item, itemSource, (connect, monitor) => ({
-    connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
-  }))(DropTarget(ItemTypes.Item, itemTarget, connect => ({
-    connectDropTarget: connect.dropTarget()
-  }))(ToDoListItem))
+export default DragSource(ItemTypes.Item, itemSource, (connect, monitor) => ({
+  connectDragSource: connect.dragSource(),
+  isDragging: monitor.isDragging()
+}))(DropTarget(ItemTypes.Item, itemTarget, connect => ({
+  connectDropTarget: connect.dropTarget()
+}))(ToDoListItem))

@@ -1,7 +1,15 @@
 import { Component, createElement as e } from 'react'
 import ToDoListItem from '../ToDoListItem'
+import { IToDoList } from '../../interfaces'
+import { IToDoListItemPropTypes } from '../ToDoListItem'
 
-export default class ToDoList extends Component<any, {}> {
+interface IToDoListPropTypes extends IToDoListItemPropTypes {
+  listDisplay: boolean
+  list: IToDoList[]
+}
+
+export default class ToDoList extends Component<IToDoListPropTypes, {}> {
+
   public render() {
     if (this.props.listDisplay) {
       return e(
@@ -9,7 +17,7 @@ export default class ToDoList extends Component<any, {}> {
         {
           className: 'list-ul'
         },
-        this.props.list.map((value: any, index: number) => {
+        this.props.list.map((value: IToDoList, index: number) => {
           return e(
             ToDoListItem,
             {

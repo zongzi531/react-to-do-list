@@ -1,20 +1,13 @@
 import { Component, createElement as e } from 'react'
 
 interface INavTabsProp {
-  tabsTitle?: string
-  tabsClass?: boolean
-  counts?: number
-  onClick?(): void
+  tabsTitle: string
+  tabsClass: boolean
+  counts: number
+  onClick(): void
 }
 
 export default class NavTabs extends Component<INavTabsProp, {}> {
-  public static defaultProps = {
-    tabsTitle: 'Nav Tabs Default Title',
-    tabsClass: true,
-    counts: 0,
-    onClick: () => ''
-  }
-
   public render() {
     const { onClick, tabsClass, tabsTitle, counts } = this.props
     return e(

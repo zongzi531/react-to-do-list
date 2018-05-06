@@ -1,5 +1,5 @@
 import { Component, createElement as e } from 'react'
-import { COLORS } from '../../config'
+import { COLORS, NULLSTRING, ACTIVECOLOR } from '../../config'
 
 interface IcolorConfig {
   color: string
@@ -26,8 +26,8 @@ export default class ColorBtn extends Component<IColorBtnPropTypes, IColorBtnSta
 
   public onClick (color: string, index: number) {
     const { colors, activeIndex } = this.state
-    colors[activeIndex].flag = ''
-    colors[index].flag = 'active'
+    colors[activeIndex].flag = NULLSTRING
+    colors[index].flag = ACTIVECOLOR
     this.setState({
       colors,
       activeIndex: index

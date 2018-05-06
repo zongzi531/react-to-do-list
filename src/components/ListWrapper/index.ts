@@ -4,10 +4,8 @@ import ColorBtn from '../ColorBtn'
 import HelpNote from '../HelpNote'
 import NavTabs from '../NavTabs'
 import ToDoList from '../ToDoList'
-
-interface Itodos {
-  text: string
-}
+import { MINUSONE, ONE, NULLSTRING, LABELTODOS, LABELHAVEDOS } from '../../config'
+import { IToDoList, IDragObject, IDropObject } from '../../interfaces'
 
 interface IListWrapperState {
   inputText: string
@@ -15,19 +13,19 @@ interface IListWrapperState {
   nowIndex: number
   keyFlag: number
   color: string
-  todos: Itodos[]
-  havedos: Itodos[]
+  todos: IToDoList[]
+  havedos: IToDoList[]
   todoflag: boolean
   havedoflag: boolean
 }
 
 export default class ListWrapper extends Component<{}, IListWrapperState> {
-  constructor(props: any) {
+  constructor(props: {}) {
     super(props)
     this.state = {
-      inputText: '',
-      editInputText: '',
-      nowIndex: -1,
+      inputText: NULLSTRING,
+      editInputText: NULLSTRING,
+      nowIndex: MINUSONE,
       keyFlag: 0,
       color: 'default',
       todos: [],
@@ -77,8 +75,8 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
       todos.push(content)
       this.setState({
         todos,
-        keyFlag: this.state.keyFlag + 1,
-        inputText: ''
+        keyFlag: this.state.keyFlag + ONE,
+        inputText: NULLSTRING
       })
     }
   }
@@ -90,8 +88,8 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
       todos[this.state.nowIndex].text = text
       this.setState({
         todos,
-        editInputText: '',
-        nowIndex: -1
+        editInputText: NULLSTRING,
+        nowIndex: MINUSONE
       })
     }
   }
@@ -101,11 +99,11 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
     const { havedos } = this.state
     const content = todos[index]
     havedos.push(content)
-    todos.splice(index, 1)
+    todos.splice(index, ONE)
     this.setState({
       todos,
       havedos,
-      nowIndex: -1
+      nowIndex: MINUSONE
     })
   }
 
@@ -114,7 +112,7 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
     const { havedos } = this.state
     const content = havedos[index]
     todos.push(content)
-    havedos.splice(index, 1)
+    havedos.splice(index, ONE)
     this.setState({
       todos,
       havedos
@@ -123,7 +121,7 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
 
   public removeTodo(index: number) {
     const { todos } = this.state
-    todos.splice(index, 1)
+    todos.splice(index, ONE)
     this.setState({
       todos
     })
@@ -131,7 +129,7 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
 
   public removeUndo(index: number) {
     const { havedos } = this.state
-    havedos.splice(index, 1)
+    havedos.splice(index, ONE)
     this.setState({
       havedos
     })
@@ -146,11 +144,11 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
 
   public cancelChange() {
     this.setState({
-      nowIndex: -1
+      nowIndex: MINUSONE
     })
   }
 
-  public selectColor(color: any) {
+  public selectColor(color: string) {
     this.setState({
       color
     })
@@ -168,7 +166,7 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
     })
   }
 
-  public moveItem({ dragItem, dragIndex }: any, { dropItem, dropIndex }: any, undo: any) {
+  public moveItem({ dragItem, dragIndex }: IDragObject, { dropItem, dropIndex }: IDropObject, undo: boolean) {
     const todos = undo ? this.state.todos : this.state.havedos
 
     todos[dragIndex] = dropItem
@@ -177,7 +175,7 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
     this.moveItemExchange(undo, todos)
   }
 
-  public moveItemExchange(undo: any, todos: any) {
+  public moveItemExchange(undo: boolean, todos: IToDoList[]) {
     if (undo) {
       this.setState({
         todos
@@ -214,7 +212,7 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
       e(
         NavTabs,
         {
-          tabsTitle: '未完成',
+          tabsTitle: LABELTODOS,
           tabsClass: !this.state.todos.length || !this.state.todoflag,
           counts: this.state.todos.length,
           onClick: this.reverseTodo
@@ -240,7 +238,7 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
       e(
         NavTabs,
         {
-          tabsTitle: '已完成',
+          tabsTitle: LABELHAVEDOS,
           tabsClass: !this.state.havedos.length || !this.state.havedoflag,
           counts: this.state.havedos.length,
           onClick: this.reverseUndo
