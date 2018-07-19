@@ -1,8 +1,13 @@
 export const TITLE = '{ To Do List }'
+export const SIGNINTITLE = '{ Sign in }'
+export const REGISTERTITLE = '{ Register }'
 
 export const AUTHOR = 'by Zong'
 
-export const HELPNOTE = '来添加你的备忘录吧！'
+export const HELPNOTE = 'Let\'s add your memo!'
+export const REGISTERNOTE = 'Don\'t use the real password, this is a demo!'
+
+export const WARNINGCOLOR = '#aa6708'
 
 export const COLORS = [
   { color: 'default', flag: 'active' },
@@ -15,9 +20,9 @@ export const COLORS = [
 
 export const ACTIVECOLOR = 'active'
 
-export const LABELTODOS = '未完成'
+export const LABELTODOS = 'Unfinished'
 
-export const LABELHAVEDOS = '已完成'
+export const LABELHAVEDOS = 'Finished'
 
 export const TODOSGROUP = 'todos'
 

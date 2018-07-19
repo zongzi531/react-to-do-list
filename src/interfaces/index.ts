@@ -4,6 +4,13 @@ export interface IToDoList {
   key: string
 }
 
+export interface IformItem {
+  label: string,
+  type: string,
+  placeholder?: string,
+  value: string
+}
+
 export interface IDragObject {
   dragItem: IToDoList
   dragIndex: number

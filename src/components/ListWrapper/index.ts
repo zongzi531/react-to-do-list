@@ -4,7 +4,7 @@ import ColorBtn from '../ColorBtn'
 import HelpNote from '../HelpNote'
 import NavTabs from '../NavTabs'
 import ToDoList from '../ToDoList'
-import { MINUSONE, ONE, NULLSTRING, LABELTODOS, LABELHAVEDOS } from '../../config'
+import { MINUSONE, ONE, NULLSTRING, LABELTODOS, LABELHAVEDOS, HELPNOTE } from '../../config'
 import { IToDoList, IDragObject, IDropObject } from '../../interfaces'
 
 interface IListWrapperState {
@@ -208,7 +208,7 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
           onClick: this.selectColor
         }
       ),
-      e(HelpNote),
+      e(HelpNote, { text: HELPNOTE }),
       e(
         NavTabs,
         {

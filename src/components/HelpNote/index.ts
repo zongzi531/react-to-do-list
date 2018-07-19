@@ -1,14 +1,22 @@
 import { Component, createElement as e } from 'react'
-import { HELPNOTE } from '../../config'
 
-export default class HelpNote extends Component<{}, {}> {
+interface IHelpNotePropTypes {
+  text?: string,
+  color?: string
+}
+
+export default class HelpNote extends Component<IHelpNotePropTypes, {}> {
   public render () {
+    const { text, color } = this.props
     return e(
       'p',
       {
-        className: 'help-block help-note'
+        className: 'help-block help-note',
+        style: {
+          color
+        }
       },
-      HELPNOTE
+      text
     )
   }
 }

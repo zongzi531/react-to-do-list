@@ -1,20 +1,25 @@
 import { Component, createElement as e } from 'react'
-import { TITLE, AUTHOR } from '../../config'
 
-export default class Title extends Component<{}, {}> {
+interface ITitlePropTypes {
+  title: string,
+  author?: string
+}
+
+export default class Title extends Component<ITitlePropTypes, {}> {
   public render () {
+    const { title, author } = this.props
     return e(
       'h1',
       {
         className: 'title'
       },
-      TITLE,
+      title,
       e(
         'small',
         {
           className: 'by'
         },
-        AUTHOR
+        author
       )
     )
   }

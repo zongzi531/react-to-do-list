@@ -67,7 +67,7 @@ button {
   font-size: 12px;
   margin-left: 10px;
 }
-.btn {
+.btn.btn-color-type {
   border-radius: 50%;
   font-size: 0;
   padding: 8px;
@@ -147,4 +147,7 @@ button {
 }
 .badge {
   margin-left: 4px;
+}
+.form-group {
+  text-align: left;
 }

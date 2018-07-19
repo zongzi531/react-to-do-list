@@ -48,7 +48,7 @@ export default class ColorBtn extends Component<IColorBtnPropTypes, IColorBtnSta
           {
             type: 'button',
             key: index,
-            className: `btn btn-${value.color} ${value.flag}`,
+            className: `btn btn-color-type btn-${value.color} ${value.flag}`,
             onClick: this.onClick.bind(this, value.color, index)
           }
         )

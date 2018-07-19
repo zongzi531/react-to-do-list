@@ -25,9 +25,7 @@ export default class NavTabs extends Component<INavTabsProp, {}> {
         },
         e(
           'a',
-          {
-            href: '#'
-          },
+          {},
           tabsTitle,
           e(
             'span',
