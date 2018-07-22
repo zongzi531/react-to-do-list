@@ -8,6 +8,7 @@ export interface IformItem {
   label: string,
   type: string,
   placeholder?: string,
+  key: string,
   value: string
 }
 

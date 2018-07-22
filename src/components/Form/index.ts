@@ -3,10 +3,11 @@ import { IformItem } from '../../interfaces'
 
 interface IFormPropTypes {
   form: IformItem[]
+  onInputChange(index: number, value: string): void
 }
 
 interface IFormState {
-  handleChange(event: React.ChangeEvent<HTMLInputElement>): void
+  handleChange(index: number, event: React.ChangeEvent<HTMLInputElement>): void
 }
 
 export default class Form extends Component<IFormPropTypes, IFormState> {
@@ -15,8 +16,8 @@ export default class Form extends Component<IFormPropTypes, IFormState> {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  public handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    console.log(event.target.value)
+  public handleChange(index: number, event: React.ChangeEvent<HTMLInputElement>) {
+    this.props.onInputChange(index, event.target.value)
   }
 
   public render() {
@@ -28,7 +29,7 @@ export default class Form extends Component<IFormPropTypes, IFormState> {
         return e(
           'div', { className: 'form-group', key: index },
           e('label', {}, label),
-          e('input', { className: 'form-control', type, placeholder, value, onChange: this.handleChange.bind(this) })
+          e('input', { className: 'form-control', type, placeholder, value, onChange: this.handleChange.bind(this, index) })
         )
       })
     )

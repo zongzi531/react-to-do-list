@@ -17,20 +17,36 @@ export default class Register extends Component<{}, IRegisterState> {
           label: 'Name',
           type: 'text',
           placeholder: 'Name',
+          key: 'username',
           value: ''
         },
         {
           label: 'Password',
           type: 'password',
           placeholder: 'Password',
+          key: 'password',
           value: ''
         }
       ]
     }
+    this.inputChange = this.inputChange.bind(this)
+    this.onClick = this.onClick.bind(this)
   }
 
-  public inputChange (value: string, index: string) {
-    console.log(value, index)
+  public inputChange(index: number, value: string) {
+    const form = this.state.form
+    form[index].value = value
+    this.setState({
+      form
+    })
+  }
+  
+  public onClick () {
+    const prarms = {}
+    for (const i of this.state.form) {
+      const { key , value } = i
+      prarms[key] = value
+    }
   }
 
   public render() {
@@ -49,8 +65,8 @@ export default class Register extends Component<{}, IRegisterState> {
       e('div', { className: 'col-md-4' },
         e(Title, { ...titleProps }),
         e(HelpNote, { ...helpNoteProps }),
-        e(Form, { form }),
-        e('button', { className: 'btn btn-primary', type: 'button' }, 'Register')
+        e(Form, { form, onInputChange: this.inputChange }),
+        e('button', { className: 'btn btn-primary', type: 'button', onClick: this.onClick }, 'Register')
       ),
       e('div', { className: 'col-md-4' })
     )
