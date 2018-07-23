@@ -1,9 +1,11 @@
 import { Component, createElement as e } from 'react'
+import { Row, Col, Button, notification } from 'antd'
 import Title from '../components/Title'
-import HelpNote from '../components/HelpNote'
 import Form from '../components/Form'
 import { IformItem } from '../interfaces'
-import { REGISTERTITLE, REGISTERNOTE, WARNINGCOLOR } from '../config'
+import { REGISTERTITLE, REGISTERNOTE } from '../config'
+import { post } from '../fetch'
+
 interface IRegisterState {
   form: IformItem[]
 }
@@ -47,28 +49,31 @@ export default class Register extends Component<{}, IRegisterState> {
       const { key , value } = i
       prarms[key] = value
     }
+    post('http://localhost:3000/regist', prarms)
+  }
+
+  public componentDidMount () {
+    notification.warning({
+      duration: null,
+      message: 'Warning Info',
+      description: REGISTERNOTE,
+    })
   }
 
   public render() {
     const titleProps = {
       title: REGISTERTITLE
     }
-    const helpNoteProps = {
-      text: REGISTERNOTE,
-      color: WARNINGCOLOR
-    }
     const { form } = this.state
     return e(
-      'div',
-      { id: 'app', className: 'row' },
-      e('div', { className: 'col-md-4' }),
-      e('div', { className: 'col-md-4' },
+      Row, { gutter: 8 },
+      e(Col, { span: 8 }),
+      e(Col, { span: 8 },
         e(Title, { ...titleProps }),
-        e(HelpNote, { ...helpNoteProps }),
         e(Form, { form, onInputChange: this.inputChange }),
-        e('button', { className: 'btn btn-primary', type: 'button', onClick: this.onClick }, 'Register')
+        e(Button, { type: 'primary', onClick: this.onClick }, 'Register')
       ),
-      e('div', { className: 'col-md-4' })
+      e(Col, { span: 8 })
     )
   }
 }

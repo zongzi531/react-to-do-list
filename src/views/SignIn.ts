@@ -1,4 +1,5 @@
 import { Component, createElement as e } from 'react'
+import { Row, Col, Button } from 'antd'
 import Title from '../components/Title'
 import Form from '../components/Form'
 import { IformItem } from '../interfaces'
@@ -50,6 +51,10 @@ export default class SignIn extends Component<{}, ISignInState> {
       prarms[key] = value
     }
     post('http://localhost:3000/login', prarms)
+    .then(res => {
+      const { token } = res
+      sessionStorage.setItem('token', token)
+    })
   }
 
   public render() {
@@ -58,15 +63,14 @@ export default class SignIn extends Component<{}, ISignInState> {
     }
     const { form } = this.state
     return e(
-      'div',
-      { id: 'app', className: 'row' },
-      e('div', { className: 'col-md-4' }),
-      e('div', { className: 'col-md-4' },
+      Row, { gutter: 8 },
+      e(Col, { span: 8 }),
+      e(Col, { span: 8 },
         e(Title, { ...titleProps }),
         e(Form, { form, onInputChange: this.inputChange }),
-        e('button', { className: 'btn btn-primary', type: 'button', onClick: this.onClick }, 'Sign in')
+        e(Button, { type: 'primary', onClick: this.onClick }, 'Sign in')
       ),
-      e('div', { className: 'col-md-4' })
+      e(Col, { span: 8 })
     )
   }
 }

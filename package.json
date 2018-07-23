@@ -3,6 +3,7 @@
   "version": "0.1.1",
   "private": true,
   "dependencies": {
+    "antd": "^3.7.1",
     "qs": "^6.5.2",
     "react": "^16.3.2",
     "react-dnd": "^2.6.0",
@@ -12,9 +13,9 @@
     "react-scripts-ts": "2.15.1"
   },
   "scripts": {
-    "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
-    "test": "react-scripts-ts test --env=jsdom",
+    "start": "react-app-rewired start --scripts-version react-scripts-ts",
+    "build": "react-app-rewired build --scripts-version react-scripts-ts",
+    "test": "react-app-rewired test  --scripts-version react-scripts-ts --env=jsdom",
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
@@ -26,6 +27,8 @@
     "@types/react-dnd-html5-backend": "^2.1.9",
     "@types/react-dom": "^16.0.5",
     "@types/react-router-dom": "^4.2.7",
+    "react-app-rewired": "^1.5.2",
+    "ts-import-plugin": "^1.5.4",
     "typescript": "^2.8.3"
   }
 }

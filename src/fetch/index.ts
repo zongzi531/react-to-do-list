@@ -1,5 +1,6 @@
 import 'whatwg-fetch'
 import { stringify } from 'qs'
+import { message as antdMessage } from 'antd'
 
 interface IResponseError extends Error {
   response?: Response
@@ -30,7 +31,8 @@ const parseJSON = (response: Response) => {
 const responseProxy = (response: IResponse) => {
   const { code, message } = response
   if (code !== SUCCESS) {
-    console.log(message)
+    antdMessage.warning(message)
+    throw response
   }
   return response
 }

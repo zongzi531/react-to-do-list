@@ -1,6 +1,7 @@
 import { Component, createElement as e } from 'react'
-import { ITEMTYPES as ItemTypes } from '../../config'
+import { Input, Icon } from 'antd'
 import { DragSource, DropTarget } from 'react-dnd'
+import { ITEMTYPES as ItemTypes } from '../../config'
 import { IToDoList, IDragObject, IDropObject } from '../../interfaces'
 
 export interface IToDoListItemPropTypes {
@@ -73,6 +74,8 @@ class ToDoListItem extends Component<IToDoListItemPropTypes, IToDoListItemState>
   public handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     if (this.props.onInputChange) {
       this.props.onInputChange(event.target.value)
+    }if (this.props.onInputChange) {
+      this.props.onInputChange(event.target.value)
     }
   }
 
@@ -108,10 +111,9 @@ class ToDoListItem extends Component<IToDoListItemPropTypes, IToDoListItemState>
       glyphicon = 'checkbox-todo'
       through = ''
       input = e(
-        'input',
+        Input,
         {
-          type: 'text',
-          className: 'form-control changeText',
+          className: 'changeText',
           value: this.props.editInputText,
           onChange: this.handleChange,
           onKeyUp: this.handleKeyup,
@@ -134,7 +136,7 @@ class ToDoListItem extends Component<IToDoListItemPropTypes, IToDoListItemState>
     this.props.moveItem(drag, drop, undo)
   }
 
-  public inputShow (flag: boolean) {
+  public inputShow(flag: boolean) {
     if (flag) { return this.change(this.props.undo).input }
     return false
   }
@@ -158,9 +160,10 @@ class ToDoListItem extends Component<IToDoListItemPropTypes, IToDoListItemState>
       e(
         'span',
         {
-          className: 'glyphicon glyphicon glyphicon-remove btn-del',
+          className: 'btn-del',
           onClick: this.removeClick.bind(this, index)
-        }
+        },
+        e(Icon, { type: 'delete' })
       ),
       e(
         'p',

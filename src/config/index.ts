@@ -7,8 +7,6 @@ export const AUTHOR = 'by Zong'
 export const HELPNOTE = 'Let\'s add your memo!'
 export const REGISTERNOTE = 'Don\'t use the real password, this is a demo!'
 
-export const WARNINGCOLOR = '#aa6708'
-
 export const COLORS = [
   { color: 'default', flag: 'active' },
   { color: 'primary', flag: '' },

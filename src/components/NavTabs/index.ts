@@ -1,4 +1,5 @@
 import { Component, createElement as e } from 'react'
+import { Badge } from 'antd'
 
 interface INavTabsProp {
   tabsTitle: string
@@ -27,13 +28,7 @@ export default class NavTabs extends Component<INavTabsProp, {}> {
           'a',
           {},
           tabsTitle,
-          e(
-            'span',
-            {
-              className: 'badge'
-            },
-            counts
-          )
+          e(Badge, { count: counts, className: 'badge', style: { backgroundColor: '#fff', color: '#999', boxShadow: '0 0 0 1px #d9d9d9 inset' } })
         )
       )
     )
