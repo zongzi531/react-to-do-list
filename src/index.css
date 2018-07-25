@@ -1,3 +1,6 @@
+body {
+  overflow: hidden;
+}
 ul {
   padding: 0;
   margin-bottom: 0;
@@ -36,7 +39,7 @@ button {
 }
 .list-item {
   position: relative;
-  padding-left: 70px;
+  padding-left: 50px;
   font-size: 14px;
   height: 50px;
   line-height: 50px;
@@ -45,15 +48,16 @@ button {
   text-decoration: line-through;
   color: #ccc;
 }
-.btn-del {
+.anticon-close {
   position: absolute;
-  right: 20px;
-  transition: all .3s cubic-bezier(.645,.045,.355,1);
-  font-size: 16px;
-  color: #d9d9d9;
+  padding: 18px;
+  top: 0;
+  right: 0;
   cursor: pointer;
+  color: #d9d9d9;
+  transition: all .3s cubic-bezier(.645,.045,.355,1);
 }
-.btn-del:hover {
+.anticon-close:hover {
   color: #ff4d4f;
 }
 .btn-add {
@@ -154,24 +158,22 @@ button {
   border-bottom-left-radius: 4px;
   border-bottom: 1px solid #d9d9d9;
 }
-.checkbox-todo {
+.control-icon {
   position: absolute;
-  display: block;
-  width: 20px;
-  height: 20px;
-  border-radius: 8px;
-  border: 2px solid #2c3e50;
-  left: 30px;
-  top: 15px;
+  padding: 18px;
+  left: 0;
+  top: 0;
+  cursor: pointer;
+  transition: all .3s cubic-bezier(.645,.045,.355,1);
 }
-.checkbox-todo:hover {
-  background: rgba(0, 0, 0, 0.1);
+.anticon-star-o:hover {
+  color: #131b23;
 }
-.checkbox-havedo {
-  position: absolute;
-  left: 30px;
-  top: 15px;
+.anticon-star {
   color: #ccc;
+}
+.anticon-star:hover {
+  color: #949494;
 }
 .checkbox-havedo:hover,
 .checkbox-havedo:hover ~ .through {
@@ -187,9 +189,9 @@ button {
 }
 .list-ul .changeText {
   position: absolute;
-  top: 8px;
-  left: 70px;
-  width: calc(100% - 130px);
+  top: 9px;
+  left: 50px;
+  width: calc(100% - 110px);
   z-index: 1;
 }
 .ant-badge.badge {

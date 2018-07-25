@@ -73,7 +73,7 @@ export default class ToDoListItem extends Component<IToDoListItemPropTypes, IToD
     let through = null
     let input = null
     if (flag) {
-      glyphicon = 'checkbox-todo'
+      glyphicon = 'star-o'
       through = ''
       input = e(
         Input,
@@ -87,7 +87,7 @@ export default class ToDoListItem extends Component<IToDoListItemPropTypes, IToD
         }
       )
     } else {
-      glyphicon = 'glyphicon glyphicon-ok checkbox-havedo'
+      glyphicon = 'star'
       through = 'through'
     }
     return {
@@ -111,20 +111,14 @@ export default class ToDoListItem extends Component<IToDoListItemPropTypes, IToD
         className: `list-item bg-${value ? value.color: ''}`
       },
       e(
-        'span',
+        Icon,
         {
-          className: `${this.change(undo).glyphicon}`,
+          className: 'control-icon',
+          type: this.change(undo).glyphicon,
           onClick: this.haveClick.bind(this, index)
         }
       ),
-      e(
-        'span',
-        {
-          className: 'btn-del',
-          onClick: this.removeClick.bind(this, index)
-        },
-        e(Icon, { type: 'delete' })
-      ),
+      e(Icon, { type: 'close', onClick: this.removeClick.bind(this, index) }),
       e(
         'p',
         {
