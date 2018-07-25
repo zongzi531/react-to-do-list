@@ -1,7 +1,9 @@
 export interface IToDoList {
   color: string
   text: string
-  key: string
+  todoId?: string
+  content?: string
+  status?: string
 }
 
 export interface IformItem {
@@ -10,14 +12,4 @@ export interface IformItem {
   placeholder?: string,
   key: string,
   value: string
-}
-
-export interface IDragObject {
-  dragItem: IToDoList
-  dragIndex: number
-}
-
-export interface IDropObject {
-  dropItem: IToDoList
-  dropIndex: number
 }

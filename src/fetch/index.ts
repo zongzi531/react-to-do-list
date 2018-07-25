@@ -2,6 +2,8 @@ import 'whatwg-fetch'
 import { stringify } from 'qs'
 import { message as antdMessage } from 'antd'
 
+const BASEURL = 'http://localhost:3000'
+
 interface IResponseError extends Error {
   response?: Response
 }
@@ -39,7 +41,7 @@ const responseProxy = (response: IResponse) => {
 
 export const post = (uri: string, params: object) => {
   const body = stringify(params)
-  return fetch(uri, {
+  return fetch(BASEURL + uri, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'

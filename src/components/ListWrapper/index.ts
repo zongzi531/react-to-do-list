@@ -5,7 +5,7 @@ import HelpNote from '../HelpNote'
 import NavTabs from '../NavTabs'
 import ToDoList from '../ToDoList'
 import { MINUSONE, ONE, NULLSTRING, LABELTODOS, LABELHAVEDOS, HELPNOTE } from '../../config'
-import { IToDoList, IDragObject, IDropObject } from '../../interfaces'
+import { IToDoList } from '../../interfaces'
 
 interface IListWrapperState {
   inputText: string
@@ -46,8 +46,6 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
     this.reverseUndo = this.reverseUndo.bind(this)
     this.changeTodos = this.changeTodos.bind(this)
     this.cancelChange = this.cancelChange.bind(this)
-    this.moveItem = this.moveItem.bind(this)
-    this.moveItemExchange = this.moveItemExchange.bind(this)
   }
 
   public handleInputChange(inputText: string) {
@@ -166,27 +164,6 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
     })
   }
 
-  public moveItem({ dragItem, dragIndex }: IDragObject, { dropItem, dropIndex }: IDropObject, undo: boolean) {
-    const todos = undo ? this.state.todos : this.state.havedos
-
-    todos[dragIndex] = dropItem
-    todos[dropIndex] = dragItem
-
-    this.moveItemExchange(undo, todos)
-  }
-
-  public moveItemExchange(undo: boolean, todos: IToDoList[]) {
-    if (undo) {
-      this.setState({
-        todos
-      })
-    } else {
-      this.setState({
-        havedos: todos
-      })
-    }
-  }
-
   public render() {
     return e(
       'div',
@@ -231,8 +208,7 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
           editInputText: this.state.editInputText,
           onKeyUp: this.editTodos,
           onBlur: this.cancelChange,
-          list: this.state.todos,
-          moveItem: this.moveItem
+          list: this.state.todos
         }
       ),
       e(
@@ -251,8 +227,7 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
           listDisplay: this.state.havedoflag,
           removeClick: this.removeUndo,
           haveClick: this.unDo,
-          list: this.state.havedos,
-          moveItem: this.moveItem
+          list: this.state.havedos
         }
       )
     )

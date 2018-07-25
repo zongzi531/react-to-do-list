@@ -37,7 +37,7 @@ button {
 .list-item {
   position: relative;
   padding-left: 70px;
-  font-size: 16px;
+  font-size: 14px;
   height: 50px;
   line-height: 50px;
 }
@@ -72,28 +72,70 @@ button {
   font-size: 12px;
   margin-left: 10px;
 }
-.btn.btn-color-type {
-  border-radius: 50%;
-  font-size: 0;
-  padding: 8px;
+.btn-color-type {
   margin: 0 6px;
 }
 .colorBtn {
   text-align: left;
   margin-top: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 16px;
+}
+.ant-btn.btn-default.active,
+.ant-btn.btn-default:hover,
+.ant-btn.btn-default {
+  background-color: #d4d4d4;
+  color: #8c8c8c;
+  border-color: inherit;
+}
+.ant-btn.btn-primary.active,
+.ant-btn.btn-primary:hover,
+.ant-btn.btn-primary {
+  background-color: #204d74;
+  color: #122b40;
+  border-color: inherit;
+}
+.ant-btn.btn-success.active,
+.ant-btn.btn-success:hover,
+.ant-btn.btn-success {
+  background-color: #398439;
+  color: #255625;
+  border-color: inherit;
+}
+.ant-btn.btn-info.active,
+.ant-btn.btn-info:hover,
+.ant-btn.btn-info {
+  background-color: #269abc;
+  color: #1b6d85;
+  border-color: inherit;
+}
+.ant-btn.btn-warning.active,
+.ant-btn.btn-warning:hover,
+.ant-btn.btn-warning {
+  background-color: #d58512;
+  color: #985f0d;
+  border-color: inherit;
+}
+.ant-btn.btn-danger.active,
+.ant-btn.btn-danger:hover,
+.ant-btn.btn-danger {
+  background-color: #ac2925;
+  color: #761c19;
+  border-color: inherit;
+}
+.ant-btn.btn-color-type {
+  border: 1px solid transparent;
 }
 .nav-justified {
-  border-top: 1px solid #ddd;
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
+  border-top: 1px solid #d9d9d9;
+  border-left: 1px solid #d9d9d9;
+  border-right: 1px solid #d9d9d9;
   border-top-right-radius: 4px;
   border-top-left-radius: 4px;
   margin-top: 10px;
 }
 .tabs-bottom {
   border-radius: 4px !important;
-  border: 1px solid #ddd !important;
+  border: 1px solid #d9d9d9 !important;
 }
 .nav-justified li a {
   font-size: 14px;
@@ -102,15 +144,15 @@ button {
   border-radius: 4px !important;
 }
 .list-ul {
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
+  border-left: 1px solid #d9d9d9;
+  border-right: 1px solid #d9d9d9;
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
 }
 .list-ul li:last-child {
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #d9d9d9;
 }
 .checkbox-todo {
   position: absolute;

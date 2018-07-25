@@ -1,13 +1,11 @@
 import { Component, createElement as e } from 'react'
-import { Row, Col, notification, Input, Icon } from 'antd'
-import { DragDropContext } from 'react-dnd'
-import HTML5Backend from 'react-dnd-html5-backend'
+import { Row, Col, notification, Input, Icon, message } from 'antd'
 import Title from '../components/Title'
 import ColorBtn from '../components/ColorBtn'
 import NavTabs from '../components/NavTabs'
 import ToDoList from '../components/ToDoList'
-import { TITLE, AUTHOR, MINUSONE, ONE, NULLSTRING, LABELTODOS, LABELHAVEDOS, HELPNOTE } from '../config'
-import { IToDoList, IDragObject, IDropObject } from '../interfaces'
+import { TITLE, AUTHOR, MINUSONE, NULLSTRING, LABELTODOS, LABELHAVEDOS, HELPNOTE } from '../config'
+import { IToDoList } from '../interfaces'
 import { post } from '../fetch'
 
 interface IListWrapperState {
@@ -22,7 +20,7 @@ interface IListWrapperState {
   havedoflag: boolean
 }
 
-class Home extends Component<{}, IListWrapperState> {
+export default class Home extends Component<{}, IListWrapperState> {
   constructor(props: {}) {
     super(props)
     this.state = {
@@ -40,17 +38,14 @@ class Home extends Component<{}, IListWrapperState> {
     this.handleListInputChange = this.handleListInputChange.bind(this)
     this.addTodos = this.addTodos.bind(this)
     this.editTodos = this.editTodos.bind(this)
-    this.haveDo = this.haveDo.bind(this)
-    this.unDo = this.unDo.bind(this)
-    this.removeTodo = this.removeTodo.bind(this)
-    this.removeUndo = this.removeUndo.bind(this)
+    this.remove = this.remove.bind(this)
     this.selectColor = this.selectColor.bind(this)
     this.reverseTodo = this.reverseTodo.bind(this)
     this.reverseUndo = this.reverseUndo.bind(this)
     this.changeTodos = this.changeTodos.bind(this)
     this.cancelChange = this.cancelChange.bind(this)
-    this.moveItem = this.moveItem.bind(this)
-    this.moveItemExchange = this.moveItemExchange.bind(this)
+    this.changeTodoStatus = this.changeTodoStatus.bind(this)
+    this.getTodoList = this.getTodoList.bind(this)
   }
 
   public handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -69,19 +64,19 @@ class Home extends Component<{}, IListWrapperState> {
     if (event.keyCode === 13 || event.clientX) {
       const text = this.state.inputText.trim()
       if (text) {
-        const { todos } = this.state
-        const key = `${this.state.color}${this.state.keyFlag}`
-        const content = {
+        const params = {
+          token: sessionStorage.getItem('token'),
           color: this.state.color,
-          text,
-          key
+          content: text
         }
-        todos.push(content)
-        this.setState({
-          todos,
-          keyFlag: this.state.keyFlag + ONE,
-          inputText: NULLSTRING
-        })
+        post('/addTodo', params)
+          .then(res => {
+            message.info(res.message)
+            this.getTodoList()
+            this.setState({
+              inputText: NULLSTRING
+            })
+          })
       }
     }
   }
@@ -90,54 +85,66 @@ class Home extends Component<{}, IListWrapperState> {
     const text = this.state.editInputText.trim()
     if (text) {
       const { todos } = this.state
-      todos[this.state.nowIndex].text = text
-      this.setState({
-        todos,
-        editInputText: NULLSTRING,
-        nowIndex: MINUSONE
+      const nowTodo = todos[this.state.nowIndex]
+      const { todoId, color, status } = nowTodo
+      const params = {
+        token: sessionStorage.getItem('token'),
+        todoId,
+        color,
+        content: text,
+        status
+      }
+      post('/updateTodo', params)
+      .then(res => {
+        message.info(res.message)
+        this.getTodoList()
+        this.setState({
+          editInputText: NULLSTRING,
+          nowIndex: MINUSONE
+        })
       })
     }
   }
 
-  public haveDo(index: number) {
+  public changeTodoStatus(status:string, index: number) {
+    console.log(status, index)
     const { todos } = this.state
     const { havedos } = this.state
-    const content = todos[index]
-    havedos.push(content)
-    todos.splice(index, ONE)
-    this.setState({
-      todos,
-      havedos,
-      nowIndex: MINUSONE
-    })
+    let todo = todos[index]
+    if (status === 'UNFINISHED') {
+      todo = havedos[index]
+    }
+    const { todoId, color, content } = todo
+    const params = {
+      token: sessionStorage.getItem('token'),
+      todoId,
+      color,
+      content,
+      status
+    }
+    post('/updateTodo', params)
+      .then(res => {
+        message.info(res.message)
+        this.getTodoList()
+      })
   }
 
-  public unDo(index: number) {
-    const { todos } = this.state
-    const { havedos } = this.state
-    const content = havedos[index]
-    todos.push(content)
-    havedos.splice(index, ONE)
-    this.setState({
-      todos,
-      havedos
-    })
-  }
-
-  public removeTodo(index: number) {
-    const { todos } = this.state
-    todos.splice(index, ONE)
-    this.setState({
-      todos
-    })
-  }
-
-  public removeUndo(index: number) {
-    const { havedos } = this.state
-    havedos.splice(index, ONE)
-    this.setState({
-      havedos
-    })
+  public remove(name: string, index: number) {
+    const todo = this.state[name]
+    const nowTodo = todo[index]
+    const { todoId, color, content } = nowTodo
+    const params = {
+      token: sessionStorage.getItem('token'),
+      todoId,
+      color,
+      content,
+      status: 'DELETED'
+    }
+    post('/updateTodo', params)
+      .then(res => {
+        message.info(res.message)
+        this.getTodoList()
+      })
   }
 
   public changeTodos(index: number) {
@@ -171,25 +178,22 @@ class Home extends Component<{}, IListWrapperState> {
     })
   }
 
-  public moveItem({ dragItem, dragIndex }: IDragObject, { dropItem, dropIndex }: IDropObject, undo: boolean) {
-    const todos = undo ? this.state.todos : this.state.havedos
-
-    todos[dragIndex] = dropItem
-    todos[dropIndex] = dragItem
-
-    this.moveItemExchange(undo, todos)
-  }
-
-  public moveItemExchange(undo: boolean, todos: IToDoList[]) {
-    if (undo) {
-      this.setState({
-        todos
+  public getTodoList () {
+    const token = sessionStorage.getItem('token')
+    post('/getTodoList', { token })
+      .then(res => {
+        const { finishedList, unfinishedList } = res
+        for (const i of unfinishedList) {
+          i.text = i.content
+        }
+        for (const i of finishedList) {
+          i.text = i.content
+        }
+        this.setState({
+          todos: unfinishedList,
+          havedos: finishedList
+        })
       })
-    } else {
-      this.setState({
-        havedos: todos
-      })
-    }
   }
 
   public componentDidMount() {
@@ -200,16 +204,9 @@ class Home extends Component<{}, IListWrapperState> {
     })
     const token = sessionStorage.getItem('token')
     if (!token) {
-      return console.log('a')
+      location.href = '/signin'
     }
-    post('http://localhost:3000/getTodoList', { token })
-    .then(res => {
-      const { finishedList, unfinishedList } = res
-      this.setState({
-        todos: unfinishedList,
-        havedos: finishedList
-      })
-    })
+    this.getTodoList()
   }
   
   public render() {
@@ -258,14 +255,13 @@ class Home extends Component<{}, IListWrapperState> {
               listDisplay: this.state.todoflag,
               nowIndex: this.state.nowIndex,
               onInputChange: this.handleListInputChange,
-              removeClick: this.removeTodo,
-              haveClick: this.haveDo,
+              removeClick: this.remove.bind(this, 'todos'),
+              haveClick: this.changeTodoStatus.bind(this, 'FINISHED'),
               changeListText: this.changeTodos,
               editInputText: this.state.editInputText,
               onKeyUp: this.editTodos,
               onBlur: this.cancelChange,
-              list: this.state.todos,
-              moveItem: this.moveItem
+              list: this.state.todos
             }
           ),
           e(
@@ -282,10 +278,9 @@ class Home extends Component<{}, IListWrapperState> {
             {
               undo: false,
               listDisplay: this.state.havedoflag,
-              removeClick: this.removeUndo,
-              haveClick: this.unDo,
-              list: this.state.havedos,
-              moveItem: this.moveItem
+              removeClick: this.remove.bind(this, 'havedos'),
+              haveClick: this.changeTodoStatus.bind(this,'UNFINISHED'),
+              list: this.state.havedos
             }
           )
         )
@@ -294,5 +289,3 @@ class Home extends Component<{}, IListWrapperState> {
     )
   }
 }
-
-export default DragDropContext(HTML5Backend)(Home)

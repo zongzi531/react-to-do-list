@@ -22,7 +22,7 @@ const routes = [
 
 const redirect = {
   path: '*',
-  to: '/'
+  to: '/signin'
 }
 
 export default class Routes extends Component<{}, {}> {

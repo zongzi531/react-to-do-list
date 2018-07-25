@@ -31,7 +31,3 @@ export const ONE = 1
 export const MINUSONE = -1
 
 export const NULLSTRING = ''
-
-export const ITEMTYPES = {
-  Item: 'ITEM'
-}

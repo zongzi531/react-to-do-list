@@ -1,5 +1,5 @@
 import { Component, createElement as e } from 'react'
-import { Row, Col, Button, notification } from 'antd'
+import { Row, Col, Button, notification, message } from 'antd'
 import Title from '../components/Title'
 import Form from '../components/Form'
 import { IformItem } from '../interfaces'
@@ -49,7 +49,12 @@ export default class Register extends Component<{}, IRegisterState> {
       const { key , value } = i
       prarms[key] = value
     }
-    post('http://localhost:3000/regist', prarms)
+    post('/regist', prarms)
+    .then(res => {
+      message.info(res.message, 3, () => {
+        location.href = '/signin'
+      })
+    })
   }
 
   public componentDidMount () {

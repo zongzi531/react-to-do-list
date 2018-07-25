@@ -50,10 +50,11 @@ export default class SignIn extends Component<{}, ISignInState> {
       const { key, value } = i
       prarms[key] = value
     }
-    post('http://localhost:3000/login', prarms)
+    post('/login', prarms)
     .then(res => {
       const { token } = res
       sessionStorage.setItem('token', token)
+      location.href = '/'
     })
   }
 

@@ -1,4 +1,5 @@
 import { Component, createElement as e } from 'react'
+import { Button } from 'antd'
 import { COLORS, NULLSTRING, ACTIVECOLOR } from '../../config'
 
 interface IcolorConfig {
@@ -44,11 +45,12 @@ export default class ColorBtn extends Component<IColorBtnPropTypes, IColorBtnSta
       },
       colors.map((value, index) => {
         return e(
-          'button',
+          Button,
           {
-            type: 'button',
+            shape: 'circle',
+            size: 'small',
             key: index,
-            className: `btn btn-color-type btn-${value.color} ${value.flag}`,
+            className: `btn-color-type btn-${value.color} ${value.flag}`,
             onClick: this.onClick.bind(this, value.color, index)
           }
         )

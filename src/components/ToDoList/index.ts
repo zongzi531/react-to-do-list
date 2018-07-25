@@ -32,8 +32,7 @@ export default class ToDoList extends Component<IToDoListPropTypes, {}> {
               onBlur: this.props.onBlur,
               value,
               index,
-              key: value.key,
-              moveItem: this.props.moveItem
+              key: index
             }
           )
         })
