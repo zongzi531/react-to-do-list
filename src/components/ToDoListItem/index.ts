@@ -29,14 +29,7 @@ interface IToDoListItemState {
 }
 
 export default class ToDoListItem extends Component<IToDoListItemPropTypes, IToDoListItemState> {
-  constructor(props: IToDoListItemPropTypes) {
-    super(props)
-    this.handleChange = this.handleChange.bind(this)
-    this.handleKeyup = this.handleKeyup.bind(this)
-    this.handleBlur = this.handleBlur.bind(this)
-  }
-
-  public handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+  public handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (this.props.onInputChange) {
       this.props.onInputChange(event.target.value)
     }if (this.props.onInputChange) {
@@ -44,31 +37,31 @@ export default class ToDoListItem extends Component<IToDoListItemPropTypes, IToD
     }
   }
 
-  public removeClick(index: number) {
+  public removeClick = (index: number) => {
     this.props.removeClick(index)
   }
 
-  public haveClick(index: number) {
+  public haveClick = (index: number) => {
     this.props.haveClick(index)
   }
 
-  public changeListText(index: number) {
+  public changeListText = (index: number) => {
     if (this.props.changeListText) { this.props.changeListText(index) }
   }
 
-  public handleKeyup(event: React.KeyboardEvent<HTMLInputElement>) {
+  public handleKeyup = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.keyCode === 13 && this.props.onKeyUp) {
       this.props.onKeyUp()
     }
   }
 
-  public handleBlur(event: React.FocusEvent<HTMLInputElement>) {
+  public handleBlur = (event: React.FocusEvent<HTMLInputElement>) => {
     if (this.props.onBlur) {
       this.props.onBlur(event)
     }
   }
 
-  public change(flag: boolean) {
+  public change = (flag: boolean) => {
     let glyphicon = null
     let through = null
     let input = null
@@ -97,12 +90,12 @@ export default class ToDoListItem extends Component<IToDoListItemPropTypes, IToD
     }
   }
 
-  public inputShow(flag: boolean) {
+  public inputShow = (flag: boolean) => {
     if (flag) { return this.change(this.props.undo).input }
     return false
   }
 
-  public render() {
+  public render () {
     const { value, index, undo, nowIndex } = this.props
 
     return e(

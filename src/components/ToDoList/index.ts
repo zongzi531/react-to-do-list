@@ -9,8 +9,7 @@ interface IToDoListPropTypes extends IToDoListItemPropTypes {
 }
 
 export default class ToDoList extends Component<IToDoListPropTypes, {}> {
-
-  public render() {
+  public render () {
     if (this.props.listDisplay) {
       return e(
         'ul',

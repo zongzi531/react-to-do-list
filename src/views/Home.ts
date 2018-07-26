@@ -34,33 +34,21 @@ export default class Home extends Component<{}, IListWrapperState> {
       todoflag: true,
       havedoflag: false
     }
-    this.handleInputChange = this.handleInputChange.bind(this)
-    this.handleListInputChange = this.handleListInputChange.bind(this)
-    this.addTodos = this.addTodos.bind(this)
-    this.editTodos = this.editTodos.bind(this)
-    this.remove = this.remove.bind(this)
-    this.selectColor = this.selectColor.bind(this)
-    this.reverseTodo = this.reverseTodo.bind(this)
-    this.reverseUndo = this.reverseUndo.bind(this)
-    this.changeTodos = this.changeTodos.bind(this)
-    this.cancelChange = this.cancelChange.bind(this)
-    this.changeTodoStatus = this.changeTodoStatus.bind(this)
-    this.getTodoList = this.getTodoList.bind(this)
   }
 
-  public handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+  public handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({
       inputText: event.target.value
     })
   }
 
-  public handleListInputChange(editInputText: string) {
+  public handleListInputChange = (editInputText: string) => {
     this.setState({
       editInputText
     })
   }
 
-  public addTodos(event: React.KeyboardEvent<HTMLInputElement> & React.MouseEvent<HTMLSpanElement>) {
+  public addTodos = (event: React.KeyboardEvent<HTMLInputElement> & React.MouseEvent<HTMLSpanElement>) => {
     if (event.keyCode === 13 || event.clientX) {
       const text = this.state.inputText.trim()
       if (text) {
@@ -81,7 +69,7 @@ export default class Home extends Component<{}, IListWrapperState> {
     }
   }
 
-  public editTodos() {
+  public editTodos = () => {
     const text = this.state.editInputText.trim()
     if (text) {
       const { todos } = this.state
@@ -106,7 +94,7 @@ export default class Home extends Component<{}, IListWrapperState> {
     }
   }
 
-  public changeTodoStatus(status:string, index: number) {
+  public changeTodoStatus = (status:string, index: number) => {
     console.log(status, index)
     const { todos } = this.state
     const { havedos } = this.state
@@ -129,7 +117,7 @@ export default class Home extends Component<{}, IListWrapperState> {
       })
   }
 
-  public remove(name: string, index: number) {
+  public remove = (name: string, index: number) => {
     const todo = this.state[name]
     const nowTodo = todo[index]
     const { todoId, color, content } = nowTodo
@@ -147,38 +135,38 @@ export default class Home extends Component<{}, IListWrapperState> {
       })
   }
 
-  public changeTodos(index: number) {
+  public changeTodos = (index: number) => {
     this.setState({
       nowIndex: index,
       editInputText: this.state.todos[index].text
     })
   }
 
-  public cancelChange() {
+  public cancelChange = () => {
     this.setState({
       nowIndex: MINUSONE
     })
   }
 
-  public selectColor(color: string) {
+  public selectColor = (color: string) => {
     this.setState({
       color
     })
   }
 
-  public reverseTodo() {
+  public reverseTodo = () => {
     this.setState({
       todoflag: !this.state.todoflag
     })
   }
 
-  public reverseUndo() {
+  public reverseUndo = () => {
     this.setState({
       havedoflag: !this.state.havedoflag
     })
   }
 
-  public getTodoList () {
+  public getTodoList = () => {
     const token = sessionStorage.getItem('token')
     post('/getTodoList', { token })
       .then(res => {
@@ -196,7 +184,7 @@ export default class Home extends Component<{}, IListWrapperState> {
       })
   }
 
-  public componentDidMount() {
+  public componentDidMount () {
     notification.info({
       duration: null,
       message: 'Info',
@@ -209,7 +197,7 @@ export default class Home extends Component<{}, IListWrapperState> {
     this.getTodoList()
   }
   
-  public render() {
+  public render () {
     const titleProps = {
       title: TITLE,
       author: AUTHOR

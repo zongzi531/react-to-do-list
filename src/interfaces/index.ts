@@ -6,10 +6,10 @@ export interface IToDoList {
   status?: string
 }
 
-export interface IformItem {
-  label: string,
-  type: string,
-  placeholder?: string,
-  key: string,
-  value: string
+export interface IFormItem {
+  key: string
+  type: string
+  reqMessage: string
+  icon: string
+  placeholder: string
 }

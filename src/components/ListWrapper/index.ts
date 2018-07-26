@@ -20,7 +20,7 @@ interface IListWrapperState {
 }
 
 export default class ListWrapper extends Component<{}, IListWrapperState> {
-  constructor(props: {}) {
+  constructor (props: {}) {
     super(props)
     this.state = {
       inputText: NULLSTRING,
@@ -33,34 +33,21 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
       todoflag: true,
       havedoflag: false
     }
-    this.handleInputChange = this.handleInputChange.bind(this)
-    this.handleListInputChange = this.handleListInputChange.bind(this)
-    this.addTodos = this.addTodos.bind(this)
-    this.editTodos = this.editTodos.bind(this)
-    this.haveDo = this.haveDo.bind(this)
-    this.unDo = this.unDo.bind(this)
-    this.removeTodo = this.removeTodo.bind(this)
-    this.removeUndo = this.removeUndo.bind(this)
-    this.selectColor = this.selectColor.bind(this)
-    this.reverseTodo = this.reverseTodo.bind(this)
-    this.reverseUndo = this.reverseUndo.bind(this)
-    this.changeTodos = this.changeTodos.bind(this)
-    this.cancelChange = this.cancelChange.bind(this)
   }
 
-  public handleInputChange(inputText: string) {
+  public handleInputChange = (inputText: string) => {
     this.setState({
       inputText
     })
   }
 
-  public handleListInputChange(editInputText: string) {
+  public handleListInputChange = (editInputText: string) => {
     this.setState({
       editInputText
     })
   }
 
-  public addTodos() {
+  public addTodos = () => {
     const text = this.state.inputText.trim()
     if (text) {
       const { todos } = this.state
@@ -79,7 +66,7 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
     }
   }
 
-  public editTodos() {
+  public editTodos = () => {
     const text = this.state.editInputText.trim()
     if (text) {
       const { todos } = this.state
@@ -92,7 +79,7 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
     }
   }
 
-  public haveDo(index: number) {
+  public haveDo = (index: number) => {
     const { todos } = this.state
     const { havedos } = this.state
     const content = todos[index]
@@ -105,7 +92,7 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
     })
   }
 
-  public unDo(index: number) {
+  public unDo = (index: number) => {
     const { todos } = this.state
     const { havedos } = this.state
     const content = havedos[index]
@@ -117,7 +104,7 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
     })
   }
 
-  public removeTodo(index: number) {
+  public removeTodo = (index: number) => {
     const { todos } = this.state
     todos.splice(index, ONE)
     this.setState({
@@ -125,7 +112,7 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
     })
   }
 
-  public removeUndo(index: number) {
+  public removeUndo = (index: number) => {
     const { havedos } = this.state
     havedos.splice(index, ONE)
     this.setState({
@@ -133,38 +120,38 @@ export default class ListWrapper extends Component<{}, IListWrapperState> {
     })
   }
 
-  public changeTodos(index: number) {
+  public changeTodos = (index: number) => {
     this.setState({
       nowIndex: index,
       editInputText: this.state.todos[index].text
     })
   }
 
-  public cancelChange() {
+  public cancelChange = () => {
     this.setState({
       nowIndex: MINUSONE
     })
   }
 
-  public selectColor(color: string) {
+  public selectColor = (color: string) => {
     this.setState({
       color
     })
   }
 
-  public reverseTodo() {
+  public reverseTodo = () => {
     this.setState({
       todoflag: !this.state.todoflag
     })
   }
 
-  public reverseUndo() {
+  public reverseUndo = () => {
     this.setState({
       havedoflag: !this.state.havedoflag
     })
   }
 
-  public render() {
+  public render () {
     return e(
       'div',
       {

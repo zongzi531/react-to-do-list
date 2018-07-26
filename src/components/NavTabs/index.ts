@@ -9,7 +9,7 @@ interface INavTabsProp {
 }
 
 export default class NavTabs extends Component<INavTabsProp, {}> {
-  public render() {
+  public render () {
     const { onClick, tabsClass, tabsTitle, counts } = this.props
     return e(
       'ul',

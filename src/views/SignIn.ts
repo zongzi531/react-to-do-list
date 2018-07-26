@@ -1,60 +1,51 @@
 import { Component, createElement as e } from 'react'
-import { Row, Col, Button } from 'antd'
+import { Row, Col, Button, Form, Icon, Input } from 'antd'
+import { FormComponentProps } from 'antd/lib/form'
 import Title from '../components/Title'
-import Form from '../components/Form'
-import { IformItem } from '../interfaces'
+import { IFormItem } from '../interfaces'
 import { SIGNINTITLE } from '../config'
 import { post } from '../fetch'
 
+const FormItem = Form.Item
+
 interface ISignInState {
-  form: IformItem[]
+  formItems: IFormItem[]
 }
 
-
-export default class SignIn extends Component<{}, ISignInState> {
-  constructor(props: {}) {
+class SignIn extends Component<FormComponentProps, ISignInState> {
+  constructor(props: FormComponentProps) {
     super(props)
     this.state = {
-      form: [
+      formItems: [
         {
-          label: 'Name',
-          type: 'text',
-          placeholder: 'Name',
           key: 'username',
-          value: ''
+          type: 'text',
+          reqMessage: 'Please input your username!',
+          icon: 'user',
+          placeholder: 'Username'
         },
         {
-          label: 'Password',
-          type: 'password',
-          placeholder: 'Password',
           key: 'password',
-          value: ''
+          type: 'password',
+          reqMessage: 'Please input your Password!',
+          icon: 'lock',
+          placeholder: 'Password'
         }
       ]
     }
-    this.inputChange = this.inputChange.bind(this)
-    this.onClick = this.onClick.bind(this)
   }
 
-  public inputChange(index: number, value: string) {
-    const form = this.state.form
-    form[index].value = value
-    this.setState({
-      form
-    })
-  }
-
-  public onClick() {
-    const prarms = {}
-    for (const i of this.state.form) {
-      const { key, value } = i
-      prarms[key] = value
-    }
-    post('/login', prarms)
-    .then(res => {
-      const { token } = res
-      sessionStorage.setItem('token', token)
-      location.href = '/'
+  public handleSubmit = (event: React.FormEvent<Element>) => {
+    event.preventDefault()
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+          post('/login', values)
+            .then(res => {
+              const { token } = res
+              sessionStorage.setItem('token', token)
+              location.href = '/'
+            })
+      }
     })
   }
 
@@ -62,16 +53,26 @@ export default class SignIn extends Component<{}, ISignInState> {
     const titleProps = {
       title: SIGNINTITLE
     }
-    const { form } = this.state
+    const { getFieldDecorator } = this.props.form
+    const { formItems } = this.state
     return e(
       Row, { gutter: 8 },
       e(Col, { span: 8 }),
       e(Col, { span: 8 },
         e(Title, { ...titleProps }),
-        e(Form, { form, onInputChange: this.inputChange }),
-        e(Button, { type: 'primary', onClick: this.onClick }, 'Sign in')
+        e(Form, { onSubmit: this.handleSubmit },
+          formItems.map((value: IFormItem, index: number) => {
+            const { key, type, reqMessage, icon, placeholder } = value
+            return e(FormItem, { key: index }, getFieldDecorator(key, {
+              rules: [{ required: true, message: reqMessage }],
+            })(e(Input, { prefix: e(Icon, { type: icon }), placeholder, type })))
+          }),
+          e(Button, { type: 'primary', htmlType: 'submit' }, 'Sign in')
+        )
       ),
       e(Col, { span: 8 })
     )
   }
 }
+
+export default Form.create()(SignIn)

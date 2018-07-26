@@ -15,15 +15,13 @@ interface IInputState {
 export default class Input extends Component<IInputPropTypes, IInputState> {
   constructor (props: IInputPropTypes) {
     super(props)
-    this.handleChange = this.handleChange.bind(this)
-    this.handleKeyup = this.handleKeyup.bind(this)
   }
 
-  public handleChange (event: React.ChangeEvent<HTMLInputElement>) {
+  public handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.props.onInputChange(event.target.value)
   }
 
-  public handleKeyup (event: React.KeyboardEvent<HTMLInputElement>) {
+  public handleKeyup = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.keyCode === 13) {
       this.props.onKeyUp()
     }

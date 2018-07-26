@@ -1,59 +1,51 @@
 import { Component, createElement as e } from 'react'
-import { Row, Col, Button, notification, message } from 'antd'
+import { Row, Col, Button, notification, message, Form, Icon, Input } from 'antd'
+import { FormComponentProps } from 'antd/lib/form'
 import Title from '../components/Title'
-import Form from '../components/Form'
-import { IformItem } from '../interfaces'
+import { IFormItem } from '../interfaces'
 import { REGISTERTITLE, REGISTERNOTE } from '../config'
 import { post } from '../fetch'
 
+const FormItem = Form.Item
+
 interface IRegisterState {
-  form: IformItem[]
+  formItems: IFormItem[]
 }
 
-export default class Register extends Component<{}, IRegisterState> {
-  constructor(props: {}) {
+class Register extends Component<FormComponentProps, IRegisterState> {
+  constructor(props: FormComponentProps) {
     super(props)
     this.state = {
-      form: [
+      formItems: [
         {
-          label: 'Name',
-          type: 'text',
-          placeholder: 'Name',
           key: 'username',
-          value: ''
+          type: 'text',
+          reqMessage: 'Please input your username!',
+          icon: 'user',
+          placeholder: 'Username'
         },
         {
-          label: 'Password',
-          type: 'password',
-          placeholder: 'Password',
           key: 'password',
-          value: ''
+          type: 'password',
+          reqMessage: 'Please input your Password!',
+          icon: 'lock',
+          placeholder: 'Password'
         }
       ]
     }
-    this.inputChange = this.inputChange.bind(this)
-    this.onClick = this.onClick.bind(this)
   }
 
-  public inputChange(index: number, value: string) {
-    const form = this.state.form
-    form[index].value = value
-    this.setState({
-      form
-    })
-  }
-  
-  public onClick () {
-    const prarms = {}
-    for (const i of this.state.form) {
-      const { key , value } = i
-      prarms[key] = value
-    }
-    post('/regist', prarms)
-    .then(res => {
-      message.info(res.message, 3, () => {
-        location.href = '/signin'
-      })
+  public handleSubmit = (event: React.FormEvent<Element>) => {
+    event.preventDefault()
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        post('/regist', values)
+          .then(res => {
+            message.info(res.message, 3, () => {
+              location.href = '/signin'
+            })
+          })
+      }
     })
   }
 
@@ -65,20 +57,30 @@ export default class Register extends Component<{}, IRegisterState> {
     })
   }
 
-  public render() {
+  public render () {
     const titleProps = {
       title: REGISTERTITLE
     }
-    const { form } = this.state
+    const { getFieldDecorator } = this.props.form
+    const { formItems } = this.state
     return e(
       Row, { gutter: 8 },
       e(Col, { span: 8 }),
       e(Col, { span: 8 },
         e(Title, { ...titleProps }),
-        e(Form, { form, onInputChange: this.inputChange }),
-        e(Button, { type: 'primary', onClick: this.onClick }, 'Register')
+        e(Form, { onSubmit: this.handleSubmit },
+          formItems.map((value: IFormItem, index: number) => {
+            const { key, type, reqMessage, icon, placeholder } = value
+            return e(FormItem, { key: index }, getFieldDecorator(key, {
+              rules: [{ required: true, message: reqMessage }],
+            })(e(Input, { prefix: e(Icon, { type: icon }), placeholder, type })))
+          }),
+          e(Button, { type: 'primary', htmlType: 'submit' }, 'Register')
+        )
       ),
       e(Col, { span: 8 })
     )
   }
 }
+
+export default Form.create()(Register)

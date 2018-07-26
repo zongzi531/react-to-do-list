@@ -25,7 +25,7 @@ export default class ColorBtn extends Component<IColorBtnPropTypes, IColorBtnSta
     }
   }
 
-  public onClick (color: string, index: number) {
+  public onClick = (color: string, index: number) => {
     const { colors, activeIndex } = this.state
     colors[activeIndex].flag = NULLSTRING
     colors[index].flag = ACTIVECOLOR

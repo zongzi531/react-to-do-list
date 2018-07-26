@@ -26,7 +26,7 @@ const redirect = {
 }
 
 export default class Routes extends Component<{}, {}> {
-  public render() {
+  public render () {
     return e(
       Router, {},
       e(Switch, {},
