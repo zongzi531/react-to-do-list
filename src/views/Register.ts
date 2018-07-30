@@ -1,4 +1,5 @@
 import { Component, createElement as e } from 'react'
+import { RouterProps } from 'react-router'
 import { Row, Col, Button, notification, message, Form, Icon, Input } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
 import Title from '../components/Title'
@@ -12,8 +13,8 @@ interface IRegisterState {
   formItems: IFormItem[]
 }
 
-class Register extends Component<FormComponentProps, IRegisterState> {
-  constructor(props: FormComponentProps) {
+class Register extends Component<FormComponentProps & RouterProps, IRegisterState> {
+  constructor(props: FormComponentProps & RouterProps) {
     super(props)
     this.state = {
       formItems: [
@@ -41,12 +42,14 @@ class Register extends Component<FormComponentProps, IRegisterState> {
       if (!err) {
         post('/regist', values)
           .then(res => {
-            message.info(res.message, 3, () => {
-              location.href = '/signin'
-            })
+            message.info(res.message)
           })
       }
     })
+  }
+
+  public goSignin = () => {
+    this.props.history.push('/signin')
   }
 
   public componentDidMount () {
@@ -75,7 +78,10 @@ class Register extends Component<FormComponentProps, IRegisterState> {
               rules: [{ required: true, message: reqMessage }],
             })(e(Input, { prefix: e(Icon, { type: icon }), placeholder, type })))
           }),
-          e(Button, { type: 'primary', htmlType: 'submit' }, 'Register')
+          e(Button, { type: 'primary', htmlType: 'submit' }, 'Register'),
+          e('p', {}, 'Or ',
+            e('a', { onClick: this.goSignin }, 'sign in now!')
+          )
         )
       ),
       e(Col, { span: 8 })

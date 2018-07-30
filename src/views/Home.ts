@@ -1,4 +1,5 @@
 import { Component, createElement as e } from 'react'
+import { RouterProps } from 'react-router'
 import { Row, Col, notification, Input, Icon, message } from 'antd'
 import Title from '../components/Title'
 import ColorBtn from '../components/ColorBtn'
@@ -20,8 +21,8 @@ interface IListWrapperState {
   havedoflag: boolean
 }
 
-export default class Home extends Component<{}, IListWrapperState> {
-  constructor(props: {}) {
+export default class Home extends Component<RouterProps, IListWrapperState> {
+  constructor(props: RouterProps) {
     super(props)
     this.state = {
       inputText: NULLSTRING,
@@ -50,12 +51,12 @@ export default class Home extends Component<{}, IListWrapperState> {
 
   public addTodos = (event: React.KeyboardEvent<HTMLInputElement> & React.MouseEvent<HTMLSpanElement>) => {
     if (event.keyCode === 13 || event.clientX) {
-      const text = this.state.inputText.trim()
-      if (text) {
+      const content = this.state.inputText.trim()
+      if (content) {
         const params = {
           token: sessionStorage.getItem('token'),
           color: this.state.color,
-          content: text
+          content
         }
         post('/addTodo', params)
           .then(res => {
@@ -70,8 +71,8 @@ export default class Home extends Component<{}, IListWrapperState> {
   }
 
   public editTodos = () => {
-    const text = this.state.editInputText.trim()
-    if (text) {
+    const content = this.state.editInputText.trim()
+    if (content) {
       const { todos } = this.state
       const nowTodo = todos[this.state.nowIndex]
       const { todoId, color, status } = nowTodo
@@ -79,7 +80,7 @@ export default class Home extends Component<{}, IListWrapperState> {
         token: sessionStorage.getItem('token'),
         todoId,
         color,
-        content: text,
+        content,
         status
       }
       post('/updateTodo', params)
@@ -138,7 +139,7 @@ export default class Home extends Component<{}, IListWrapperState> {
   public changeTodos = (index: number) => {
     this.setState({
       nowIndex: index,
-      editInputText: this.state.todos[index].text
+      editInputText: this.state.todos[index].content
     })
   }
 
@@ -171,12 +172,6 @@ export default class Home extends Component<{}, IListWrapperState> {
     post('/getTodoList', { token })
       .then(res => {
         const { finishedList, unfinishedList } = res
-        for (const i of unfinishedList) {
-          i.text = i.content
-        }
-        for (const i of finishedList) {
-          i.text = i.content
-        }
         this.setState({
           todos: unfinishedList,
           havedos: finishedList
@@ -192,7 +187,7 @@ export default class Home extends Component<{}, IListWrapperState> {
     })
     const token = sessionStorage.getItem('token')
     if (!token) {
-      location.href = '/signin'
+      this.props.history.push('/signin')
     }
     this.getTodoList()
   }

@@ -1,9 +1,8 @@
 export interface IToDoList {
   color: string
-  text: string
-  todoId?: string
-  content?: string
-  status?: string
+  todoId: string
+  content: string
+  status: string
 }
 
 export interface IFormItem {

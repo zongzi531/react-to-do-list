@@ -116,10 +116,10 @@ export default class ToDoListItem extends Component<IToDoListItemPropTypes, IToD
         'p',
         {
           className: 'list-text',
-          title: value ? value.text: '',
+          title: value ? value.content: '',
           onClick: this.changeListText.bind(this, index)
         },
-        e('span', { className: `${this.change(undo).through}` }, value ? value.text : ''),
+        e('span', { className: `${this.change(undo).through}` }, value ? value.content : ''),
         this.inputShow(nowIndex === index)
       )
     )

@@ -1,4 +1,5 @@
 import { Component, createElement as e } from 'react'
+import { RouterProps } from 'react-router'
 import { Row, Col, Button, Form, Icon, Input } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
 import Title from '../components/Title'
@@ -12,8 +13,8 @@ interface ISignInState {
   formItems: IFormItem[]
 }
 
-class SignIn extends Component<FormComponentProps, ISignInState> {
-  constructor(props: FormComponentProps) {
+class SignIn extends Component<FormComponentProps & RouterProps, ISignInState> {
+  constructor(props: FormComponentProps & RouterProps) {
     super(props)
     this.state = {
       formItems: [
@@ -43,10 +44,14 @@ class SignIn extends Component<FormComponentProps, ISignInState> {
             .then(res => {
               const { token } = res
               sessionStorage.setItem('token', token)
-              location.href = '/'
+              this.props.history.push('/')
             })
       }
     })
+  }
+
+  public goRegister = () => {
+    this.props.history.push('/register')
   }
 
   public render() {
@@ -67,7 +72,10 @@ class SignIn extends Component<FormComponentProps, ISignInState> {
               rules: [{ required: true, message: reqMessage }],
             })(e(Input, { prefix: e(Icon, { type: icon }), placeholder, type })))
           }),
-          e(Button, { type: 'primary', htmlType: 'submit' }, 'Sign in')
+          e(Button, { type: 'primary', htmlType: 'submit' }, 'Sign in'),
+          e('p', {}, 'Or ',
+            e('a', { onClick: this.goRegister }, 'register now!')
+          )
         )
       ),
       e(Col, { span: 8 })
