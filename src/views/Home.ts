@@ -187,7 +187,7 @@ export default class Home extends Component<RouterProps, IListWrapperState> {
     })
     const token = sessionStorage.getItem('token')
     if (!token) {
-      this.props.history.push('/signin')
+      return this.props.history.push('/signin')
     }
     this.getTodoList()
   }

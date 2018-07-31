@@ -3,6 +3,7 @@ import { stringify } from 'qs'
 import { message as antdMessage } from 'antd'
 
 const BASEURL = 'http://localhost:3000'
+// const BASEURL = ''
 
 interface IResponseError extends Error {
   response?: Response
