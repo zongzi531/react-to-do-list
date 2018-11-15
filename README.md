@@ -5,5 +5,3 @@
 ## Description
 
 Created ts Branch use Typescript recoding this Project.
-
-[Link >>](http://demo.zongzi531.com)
