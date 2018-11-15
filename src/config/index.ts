@@ -1,33 +1,57 @@
-export const TITLE = '{ To Do List }'
-export const SIGNINTITLE = '{ Sign in }'
-export const REGISTERTITLE = '{ Register }'
+export enum VIEWSTITLE {
+  HOME = '{ To Do List }',
+  SIGNIN = '{ Sign in }',
+  REGISTER = '{ Register }',
+}
 
-export const AUTHOR = 'by Zong'
+export enum VIEWSAUTHOR {
+  ZONG = 'by Zong',
+}
 
-export const HELPNOTE = 'Let\'s add your memo!'
-export const REGISTERNOTE = 'Don\'t use the real password, this is a demo!'
+export enum NOTE {
+  HELP = 'Let\'s add your memo!',
+  REGISTER = 'Don\'t use the real password, this is a demo!',
+}
 
-export const COLORS = [
-  { color: 'default', flag: 'active' },
-  { color: 'primary', flag: '' },
-  { color: 'success', flag: '' },
-  { color: 'info', flag: '' },
-  { color: 'warning', flag: '' },
-  { color: 'danger', flag: '' }
+export enum COLOR {
+  DEFAULT = 'default',
+  PRIMARY = 'primary',
+  SUCCESS = 'success',
+  INFO = 'info',
+  WARNING = 'warning',
+  DANGER = 'danger',
+}
+
+export enum COLORFLAG {
+  ACTIVE = 'active',
+  EMPTY = '',
+}
+
+export enum TODOSLABEL {
+  FINISHED = 'Finished',
+  UNFINISHED = 'Unfinished'
+}
+
+export enum NUMBER {
+  MINUSONE = -1,
+}
+
+export enum STRING {
+  EMPTY = '',
+}
+
+export interface ICOLOR {
+  color: COLOR
+  flag: COLORFLAG
+}
+
+export type COLORS = ICOLOR[]
+
+export const COLORS: COLORS = [
+  { color: COLOR.DEFAULT, flag: COLORFLAG.ACTIVE },
+  { color: COLOR.PRIMARY, flag: COLORFLAG.EMPTY },
+  { color: COLOR.SUCCESS, flag: COLORFLAG.EMPTY },
+  { color: COLOR.INFO, flag: COLORFLAG.EMPTY },
+  { color: COLOR.WARNING, flag: COLORFLAG.EMPTY },
+  { color: COLOR.DANGER, flag: COLORFLAG.EMPTY }
 ]
-
-export const ACTIVECOLOR = 'active'
-
-export const LABELTODOS = 'Unfinished'
-
-export const LABELHAVEDOS = 'Finished'
-
-export const TODOSGROUP = 'todos'
-
-export const HAVEDOSGROUP = 'havedos'
-
-export const ONE = 1
-
-export const MINUSONE = -1
-
-export const NULLSTRING = ''

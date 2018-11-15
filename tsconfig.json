@@ -26,6 +26,7 @@
     "webpack",
     "jest",
     "src/setupTests.ts",
-    "docs"
+    "docs",
+    "config-overrides.js"
   ]
 }

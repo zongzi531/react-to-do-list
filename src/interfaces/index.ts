@@ -1,14 +1,15 @@
-export interface IToDoList {
-  color: string
-  todoId: string
-  content: string
-  status: string
-}
+
+import { RouterProps } from 'react-router'
+import { FormComponentProps } from 'antd/lib/form'
+
+export type AntdFormAndRouterProps = FormComponentProps & RouterProps
 
 export interface IFormItem {
   key: string
   type: string
-  reqMessage: string
-  icon: string
-  placeholder: string
+  reqMessage?: string
+  icon?: string
+  placeholder?: string
 }
+
+export type FormItems = IFormItem[]

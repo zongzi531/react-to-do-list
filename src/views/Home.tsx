@@ -1,12 +1,12 @@
-import { Component, createElement as e } from 'react'
+import * as React from 'react'
 import { RouterProps } from 'react-router'
 import { Row, Col, notification, Input, Icon, message } from 'antd'
 import Title from '../components/Title'
 import ColorBtn from '../components/ColorBtn'
 import NavTabs from '../components/NavTabs'
 import ToDoList from '../components/ToDoList'
-import { TITLE, AUTHOR, MINUSONE, NULLSTRING, LABELTODOS, LABELHAVEDOS, HELPNOTE } from '../config'
-import { IToDoList } from '../interfaces'
+import { VIEWSTITLE, VIEWSAUTHOR, NUMBER, STRING, TODOSLABEL, NOTE, COLOR } from '../config'
+import { IToDoS } from '../components/ToDoItem'
 import { post } from '../fetch'
 
 interface IListWrapperState {
@@ -15,21 +15,21 @@ interface IListWrapperState {
   nowIndex: number
   keyFlag: number
   color: string
-  todos: IToDoList[]
-  havedos: IToDoList[]
+  todos: IToDoS
+  havedos: IToDoS
   todoflag: boolean
   havedoflag: boolean
 }
 
-export default class Home extends Component<RouterProps, IListWrapperState> {
+export default class Home extends React.Component<RouterProps, IListWrapperState> {
   constructor(props: RouterProps) {
     super(props)
     this.state = {
-      inputText: NULLSTRING,
-      editInputText: NULLSTRING,
-      nowIndex: MINUSONE,
+      inputText: STRING.EMPTY,
+      editInputText: STRING.EMPTY,
+      nowIndex: NUMBER.MINUSONE,
       keyFlag: 0,
-      color: 'default',
+      color: COLOR.DEFAULT,
       todos: [],
       havedos: [],
       todoflag: true,
@@ -63,7 +63,7 @@ export default class Home extends Component<RouterProps, IListWrapperState> {
             message.info(res.message)
             this.getTodoList()
             this.setState({
-              inputText: NULLSTRING
+              inputText: STRING.EMPTY
             })
           })
       }
@@ -84,18 +84,18 @@ export default class Home extends Component<RouterProps, IListWrapperState> {
         status
       }
       post('/updateTodo', params)
-      .then(res => {
-        message.info(res.message)
-        this.getTodoList()
-        this.setState({
-          editInputText: NULLSTRING,
-          nowIndex: MINUSONE
+        .then(res => {
+          message.info(res.message)
+          this.getTodoList()
+          this.setState({
+            editInputText: STRING.EMPTY,
+            nowIndex: NUMBER.MINUSONE
+          })
         })
-      })
     }
   }
 
-  public changeTodoStatus = (status:string, index: number) => {
+  public changeTodoStatus = (status: string, index: number) => {
     console.log(status, index)
     const { todos } = this.state
     const { havedos } = this.state
@@ -145,7 +145,7 @@ export default class Home extends Component<RouterProps, IListWrapperState> {
 
   public cancelChange = () => {
     this.setState({
-      nowIndex: MINUSONE
+      nowIndex: NUMBER.MINUSONE
     })
   }
 
@@ -179,11 +179,11 @@ export default class Home extends Component<RouterProps, IListWrapperState> {
       })
   }
 
-  public componentDidMount () {
+  public componentDidMount() {
     notification.info({
       duration: null,
       message: 'Info',
-      description: HELPNOTE,
+      description: NOTE.HELP,
     })
     const token = sessionStorage.getItem('token')
     if (!token) {
@@ -191,84 +191,56 @@ export default class Home extends Component<RouterProps, IListWrapperState> {
     }
     this.getTodoList()
   }
-  
-  public render () {
+
+  public render() {
     const titleProps = {
-      title: TITLE,
-      author: AUTHOR
+      title: VIEWSTITLE.HOME,
+      author: VIEWSAUTHOR.ZONG
     }
-    return e(
-      Row, { gutter: 8 },
-      e(Col, { span: 8 }),
-      e(Col, { span: 8 },
-        e(Title, { ...titleProps }),
-        e(
-          'div',
-          {
-            className: 'list-wrapper'
-          },
-          e(
-            Input,
-            {
-              addonAfter: e(Icon, { type: 'enter', onClick: this.addTodos }),
-              value: this.state.inputText,
-              onChange: this.handleInputChange,
-              onKeyUp: this.addTodos
-            }
-          ),
-          e(
-            ColorBtn,
-            {
-              onClick: this.selectColor
-            }
-          ),
-          e(
-            NavTabs,
-            {
-              tabsTitle: LABELTODOS,
-              tabsClass: !this.state.todos.length || !this.state.todoflag,
-              counts: this.state.todos.length,
-              onClick: this.reverseTodo
-            }
-          ),
-          e(
-            ToDoList,
-            {
-              undo: true,
-              listDisplay: this.state.todoflag,
-              nowIndex: this.state.nowIndex,
-              onInputChange: this.handleListInputChange,
-              removeClick: this.remove.bind(this, 'todos'),
-              haveClick: this.changeTodoStatus.bind(this, 'FINISHED'),
-              changeListText: this.changeTodos,
-              editInputText: this.state.editInputText,
-              onKeyUp: this.editTodos,
-              onBlur: this.cancelChange,
-              list: this.state.todos
-            }
-          ),
-          e(
-            NavTabs,
-            {
-              tabsTitle: LABELHAVEDOS,
-              tabsClass: !this.state.havedos.length || !this.state.havedoflag,
-              counts: this.state.havedos.length,
-              onClick: this.reverseUndo
-            }
-          ),
-          e(
-            ToDoList,
-            {
-              undo: false,
-              listDisplay: this.state.havedoflag,
-              removeClick: this.remove.bind(this, 'havedos'),
-              haveClick: this.changeTodoStatus.bind(this,'UNFINISHED'),
-              list: this.state.havedos
-            }
-          )
-        )
-      ),
-      e(Col, { span: 8 })
+    return (
+      <Row gutter={8}>
+        <Col span={8} />
+        <Col span={8}>
+          <Title {...titleProps} />
+          <div className="list-wrapper">
+            <Input
+              addonAfter={<Icon type="enter" onClick={this.addTodos} />}
+              value={this.state.inputText}
+              onChange={this.handleInputChange}
+              onKeyUp={this.addTodos} />
+            <ColorBtn onClick={this.selectColor} />
+            <NavTabs
+              tabsTitle={TODOSLABEL.UNFINISHED}
+              tabsClass={!this.state.todos.length || !this.state.todoflag}
+              counts={this.state.todos.length}
+              onClick={this.reverseTodo} />
+            <ToDoList
+              undo={true}
+              listDisplay={this.state.todoflag}
+              nowIndex={this.state.nowIndex}
+              onInputChange={this.handleListInputChange}
+              removeClick={this.remove.bind(this, 'todos')}
+              haveClick={this.changeTodoStatus.bind(this, 'FINISHED')}
+              changeListText={this.changeTodos}
+              editInputText={this.state.editInputText}
+              onKeyUp={this.editTodos}
+              onBlur={this.cancelChange}
+              list={this.state.todos} />
+            <NavTabs
+              tabsTitle={TODOSLABEL.FINISHED}
+              tabsClass={!this.state.havedos.length || !this.state.havedoflag}
+              counts={this.state.havedos.length}
+              onClick={this.reverseUndo} />
+            <ToDoList
+              undo={false}
+              listDisplay={this.state.havedoflag}
+              removeClick={this.remove.bind(this, 'havedos')}
+              haveClick={this.changeTodoStatus.bind(this, 'UNFINISHED')}
+              list={this.state.havedos} />
+          </div>
+        </Col>
+        <Col span={8} />
+      </Row>
     )
   }
 }
