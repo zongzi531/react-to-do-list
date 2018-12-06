@@ -7,4 +7,4 @@ jobs:
   include:
     - stage: Produce Coverage
       node_js: node
-      script: npm run cover && rm -rf ./coverage
+      script: jest --coverage --coverageReporters=text-lcov | coveralls
