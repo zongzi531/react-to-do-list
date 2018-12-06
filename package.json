@@ -14,7 +14,7 @@
     "start": "react-app-rewired start --scripts-version react-scripts-ts",
     "build": "react-app-rewired build --scripts-version react-scripts-ts",
     "test": "react-app-rewired test  --scripts-version react-scripts-ts --env=jsdom",
-    "coverage": "react-app-rewired test  --scripts-version react-scripts-ts --env=jsdom --coverage",
+    "cover": "react-app-rewired test  --scripts-version react-scripts-ts --env=jsdom --coverage",
     "eject": "react-scripts-ts eject"
   },
   "devDependencies": {
@@ -26,7 +26,6 @@
     "@types/react": "^16.3.13",
     "@types/react-dom": "^16.0.5",
     "@types/react-router-dom": "^4.2.7",
-    "coveralls": "^3.0.2",
     "enzyme": "^3.7.0",
     "enzyme-adapter-react-16": "^1.7.0",
     "react-app-rewired": "^1.5.2",
