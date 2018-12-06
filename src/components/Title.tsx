@@ -10,7 +10,7 @@ type Title = ({ title, author }: IProps) => JSX.Element
 const Title: Title = ({ title, author }) => (
   <h1 className="title">
     {title}
-    <small className="by">{author}</small>
+    { author && (<small className="by">{author}</small>) }
   </h1>
 )
 
