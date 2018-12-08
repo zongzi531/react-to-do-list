@@ -1,7 +1,5 @@
 import * as React from 'react'
-import ToDoListItem from './ToDoItem'
-import { IToDo, IToDoS } from '../components/ToDoItem'
-import { IToDoItemProps } from './ToDoItem'
+import ToDoItem, { IToDoItemProps, IToDo, IToDoS } from './ToDoItem'
 
 interface IProps extends IToDoItemProps {
   listDisplay: boolean
@@ -37,7 +35,7 @@ const ToDoList: ToDoList = ({
       {
         listDisplay && list.map((value: IToDo, index: number) => {
           return (
-            <ToDoListItem
+            <ToDoItem
               undo={undo}
               nowIndex={nowIndex}
               onInputChange={onInputChange}

@@ -27,6 +27,7 @@
     "jest",
     "src/setupTests.ts",
     "docs",
-    "config-overrides.js"
+    "config-overrides.js",
+    "coverage"
   ]
 }
